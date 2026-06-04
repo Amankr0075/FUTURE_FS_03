@@ -18,14 +18,16 @@ export default function Menu() {
           setItems(res.data.data);
         }
       })
-      .catch(() => {});
+      .catch((err) => {
+        console.error('Menu API Error:', err);
+      });
   }, []);
 
   const filtered = useMemo(() => {
     return items.filter(item => {
       const matchCat = activeCategory === 'All' || item.category === activeCategory;
       const matchSearch = item.name.toLowerCase().includes(search.toLowerCase()) ||
-                          item.description.toLowerCase().includes(search.toLowerCase());
+        item.description.toLowerCase().includes(search.toLowerCase());
       return matchCat && matchSearch;
     });
   }, [items, activeCategory, search]);
