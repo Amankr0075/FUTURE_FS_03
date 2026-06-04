@@ -5,7 +5,7 @@ import { useOutletContext } from 'react-router-dom';
 import {
   FiCalendar, FiMail, FiTrash2, FiPlus, FiEdit2, FiX,
   FiCheckCircle, FiAlertCircle, FiUsers, FiPhone, FiBriefcase,
-  FiStar, FiClock, FiRefreshCw,
+  FiStar, FiClock, FiRefreshCw, FiFileText, FiPrinter,
 } from 'react-icons/fi';
 import { MdRestaurantMenu } from 'react-icons/md';
 import {
