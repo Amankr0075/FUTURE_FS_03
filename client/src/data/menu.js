@@ -1,4 +1,5 @@
 // Static menu data — used as seed / fallback when backend is unavailable
+const BASE_URL = import.meta.env.BASE_URL;
 export const CATEGORIES = ['All', 'Starters', 'Main Course', 'Biryani', 'Breads', 'Desserts', 'Beverages'];
 
 export const menuItems = [
@@ -9,7 +10,7 @@ export const menuItems = [
     description: 'Succulent cottage cheese marinated in aromatic spices, char-grilled to perfection in a tandoor. Served with mint chutney.',
     price: 349,
     category: 'Starters',
-    image: '/images/paneer_tikka.png',
+    image: `${BASE_URL}images/paneer_tikka.png`,
     isPopular: true,
     isAvailable: true,
     isVeg: true,
@@ -66,7 +67,7 @@ export const menuItems = [
     description: 'Tender chicken in a rich, velvety tomato-cream sauce infused with kasuri methi and aromatic spices. A timeless classic.',
     price: 529,
     category: 'Main Course',
-    image: '/images/butter_chicken.png',
+    image: `${BASE_URL}images/butter_chicken.png`,
     isPopular: true,
     isAvailable: true,
     isVeg: false,
@@ -123,7 +124,7 @@ export const menuItems = [
     description: 'Fragrant basmati rice dum-cooked with seasonal vegetables, saffron, and whole spices. Served with raita and mirchi salan.',
     price: 399,
     category: 'Biryani',
-    image: '/images/biryani.png',
+    image: `${BASE_URL}images/biryani.png`,
     isPopular: true,
     isAvailable: true,
     isVeg: true,
@@ -158,7 +159,7 @@ export const menuItems = [
     description: 'Whole chicken marinated in yoghurt, lemon and a royal blend of spices, roasted in our clay tandoor at high heat for a smoky char.',
     price: 579,
     category: 'Main Course',
-    image: '/images/tandoori_chicken.png',
+    image: `${BASE_URL}images/tandoori_chicken.png`,
     isPopular: true,
     isAvailable: true,
     isVeg: false,
@@ -217,7 +218,7 @@ export const menuItems = [
     description: 'Soft, spongy milk-solid dumplings fried golden, soaked in rose-scented sugar syrup. Served warm with a scoop of kulfi.',
     price: 199,
     category: 'Desserts',
-    image: '/images/gulab_jamun.png',
+    image: `${BASE_URL}images/gulab_jamun.png`,
     isPopular: true,
     isAvailable: true,
     isVeg: true,

@@ -22,10 +22,10 @@ const testimonials = [
 ];
 
 const whyUs = [
-  { icon: MdOutlineEco,       title: 'Farm-Fresh Ingredients', desc: 'We source only the finest seasonal produce directly from local farms. No compromise on freshness.' },
-  { icon: GiChefToque,        title: 'Master Chefs',           desc: 'Our culinary team has over 30+ years of combined experience crafting authentic Indian recipes.' },
-  { icon: FiClock,            title: 'Swift Service',          desc: 'We respect your time. Expect prompt, courteous service without sacrificing quality.' },
-  { icon: MdLocalFireDepartment, title: 'Live Tandoor',        desc: 'Experience the magic of live tandoor cooking — the authentic smokiness in every bite.' },
+  { icon: MdOutlineEco, title: 'Farm-Fresh Ingredients', desc: 'We source only the finest seasonal produce directly from local farms. No compromise on freshness.' },
+  { icon: GiChefToque, title: 'Master Chefs', desc: 'Our culinary team has over 30+ years of combined experience crafting authentic Indian recipes.' },
+  { icon: FiClock, title: 'Swift Service', desc: 'We respect your time. Expect prompt, courteous service without sacrificing quality.' },
+  { icon: MdLocalFireDepartment, title: 'Live Tandoor', desc: 'Experience the magic of live tandoor cooking — the authentic smokiness in every bite.' },
 ];
 
 export default function Home() {
@@ -39,7 +39,11 @@ export default function Home() {
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section style={{ position: 'relative', height: '100vh', minHeight: 600, display: 'flex', alignItems: 'center', overflow: 'hidden', paddingTop: '72px' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <img src="/images/hero_banner.png" alt="Royal Spice Restaurant" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img
+            src={`${import.meta.env.BASE_URL}images/hero_banner.png`}
+            alt="Royal Spice Restaurant"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
           <div className="hero-overlay" style={{ position: 'absolute', inset: 0 }} />
         </div>
 
