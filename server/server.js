@@ -38,6 +38,20 @@ app.use('/api/contact', require('./routes/contact'));
 app.use('/api/menu', require('./routes/menu'));
 app.use('/api/payment', require('./routes/payment'));
 
+app.get('/api', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Royal Spice API v1',
+    endpoints: [
+      '/api/health',
+      '/api/menu',
+      '/api/contact',
+      '/api/reservations',
+      '/api/payment'
+    ]
+  });
+});
+
 // ── 404 catch-all ────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found.` });
