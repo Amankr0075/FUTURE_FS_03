@@ -14,6 +14,10 @@ concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
 
+# Grant write access to gh-pages branch (fixes exit code 128)
+permissions:
+  contents: write
+
 jobs:
   # ═══════════════════════════════════════════
   # JOB 1 — Build & Deploy Frontend → GitHub Pages
@@ -99,7 +103,7 @@ jobs:
 
             # Restart PM2 — graceful reload keeps zero downtime
             echo "♻️  Restarting PM2 process..."
-            pm2 reload royalspice-api --update-env || pm2 start ecosystem.config.js
+            pm2 reload royalspice-api --update-env || pm2 start ecosystem.config.js --env production
 
             # Save PM2 state so it survives reboots
             pm2 save
