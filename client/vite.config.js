@@ -7,6 +7,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+
+  base: '/FUTURE_FS_03/',
+
   server: {
     proxy: {
       '/api': {
