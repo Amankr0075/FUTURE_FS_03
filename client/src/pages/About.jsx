@@ -25,7 +25,7 @@ const chefs = [
     experience: '12 Years Experience',
     specialty: 'Indian Sweets & Fusion Desserts',
     desc: 'Chef Meera transforms traditional mithai into works of art. Her Gulab Jamun and Rasmalai have earned a cult following among dessert lovers.',
-    image: '/images/chef-meera-nair.png',
+    image: `${import.meta.env.BASE_URL}images/chef-meera-nair.png`,
   },
   {
     name: 'Chef Rahul Verma',
@@ -39,8 +39,8 @@ const chefs = [
 
 const milestones = [
   { year: '2009', event: 'Royal Spice Founded', desc: 'Opened our first 40-seat restaurant in Connaught Place, New Delhi.' },
-  { year: '2012', event: 'First Award',         desc: 'Won "Best Indian Restaurant in Delhi" by the Times Food Guide.' },
-  { year: '2016', event: 'Expansion',           desc: 'Extended to a 150-seat premium dining hall with private dining suites.' },
+  { year: '2012', event: 'First Award', desc: 'Won "Best Indian Restaurant in Delhi" by the Times Food Guide.' },
+  { year: '2016', event: 'Expansion', desc: 'Extended to a 150-seat premium dining hall with private dining suites.' },
   { year: '2019', event: 'National Recognition', desc: 'Featured in Condé Nast Traveller\'s "Top 50 Restaurants in India".' },
   { year: '2023', event: '15 Years of Flavour', desc: 'Serving over 2,400 happy guests each month with the same passion.' },
 ];
@@ -115,9 +115,9 @@ export default function About() {
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
             {[
-              { icon: FiHeart,  title: 'Our Mission',  color: '#F59E0B', text: 'To deliver an extraordinary dining experience by combining time-honoured Indian recipes with exceptional service, creating moments that guests cherish long after they leave our table.' },
-              { icon: FiStar,   title: 'Our Vision',   color: '#F59E0B', text: 'To become the most-loved and most-trusted Indian restaurant in the city — a place where families celebrate milestones, couples create memories, and every guest leaves feeling like royalty.' },
-              { icon: FiUsers,  title: 'Our Values',   color: '#F59E0B', text: 'Authenticity, quality, and warmth guide every decision we make — from sourcing ingredients to training our team, ensuring every plate we serve honours the richness of Indian culinary heritage.' },
+              { icon: FiHeart, title: 'Our Mission', color: '#F59E0B', text: 'To deliver an extraordinary dining experience by combining time-honoured Indian recipes with exceptional service, creating moments that guests cherish long after they leave our table.' },
+              { icon: FiStar, title: 'Our Vision', color: '#F59E0B', text: 'To become the most-loved and most-trusted Indian restaurant in the city — a place where families celebrate milestones, couples create memories, and every guest leaves feeling like royalty.' },
+              { icon: FiUsers, title: 'Our Values', color: '#F59E0B', text: 'Authenticity, quality, and warmth guide every decision we make — from sourcing ingredients to training our team, ensuring every plate we serve honours the richness of Indian culinary heritage.' },
             ].map(({ icon: Icon, title, text, color }, i) => (
               <motion.div key={title} {...fadeUp} transition={{ delay: i * 0.15, duration: 0.6 }}
                 className="glass-card" style={{ padding: '2.5rem', borderRadius: '1rem' }}>

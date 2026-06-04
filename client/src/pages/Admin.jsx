@@ -10,8 +10,8 @@ import {
 import { MdRestaurantMenu } from 'react-icons/md';
 import {
   getReservations, deleteReservation,
-  getContacts,     deleteContact,
-  getMenuItems,    createMenuItem, updateMenuItem, deleteMenuItem,
+  getContacts, deleteContact,
+  getMenuItems, createMenuItem, updateMenuItem, deleteMenuItem,
 } from '../services/api';
 import { menuItems as staticMenu, CATEGORIES } from '../data/menu';
 
@@ -44,7 +44,7 @@ const DEFAULT_STAFF = [
     shift: 'Morning',
     status: 'Active',
     specialty: 'Indian Sweets & Fusion Desserts',
-    image: '/images/chef-meera-nair.png',
+    image: `${import.meta.env.BASE_URL}images/chef-meera-nair.png`,
     joinDate: '2012-03-20',
   },
   {
@@ -134,16 +134,16 @@ const DEFAULT_STAFF = [
 ];
 
 const DEPT_COLORS = {
-  Kitchen:    { bg: 'rgba(245,158,11,0.12)',  border: 'rgba(245,158,11,0.35)',  color: '#F59E0B'  },
+  Kitchen: { bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.35)', color: '#F59E0B' },
   Management: { bg: 'rgba(168,85,247,0.12)', border: 'rgba(168,85,247,0.35)', color: '#a855f7' },
-  Service:    { bg: 'rgba(59,130,246,0.12)', border: 'rgba(59,130,246,0.35)', color: '#3b82f6' },
-  Bar:        { bg: 'rgba(34,197,94,0.12)',  border: 'rgba(34,197,94,0.35)',  color: '#22c55e' },
+  Service: { bg: 'rgba(59,130,246,0.12)', border: 'rgba(59,130,246,0.35)', color: '#3b82f6' },
+  Bar: { bg: 'rgba(34,197,94,0.12)', border: 'rgba(34,197,94,0.35)', color: '#22c55e' },
 };
 
-const SHIFTS   = ['Morning', 'Evening', 'Full Day', 'Night'];
-const DEPTS    = ['Kitchen', 'Management', 'Service', 'Bar'];
+const SHIFTS = ['Morning', 'Evening', 'Full Day', 'Night'];
+const DEPTS = ['Kitchen', 'Management', 'Service', 'Bar'];
 const STATUSES = ['Active', 'On Leave', 'Inactive'];
-const blankStaff = { name:'', role:'', department:'Kitchen', phone:'', email:'', experience:'', shift:'Morning', status:'Active', specialty:'', image:'', joinDate:'' };
+const blankStaff = { name: '', role: '', department: 'Kitchen', phone: '', email: '', experience: '', shift: 'Morning', status: 'Active', specialty: '', image: '', joinDate: '' };
 
 /* ═══════════════════════════════════════════════════════════════ */
 export default function Admin() {
@@ -152,11 +152,11 @@ export default function Admin() {
   return (
     <>
       <Helmet><title>Admin | Royal Spice Restaurant</title></Helmet>
-      {activeSection === 'dashboard'    && <Dashboard />}
+      {activeSection === 'dashboard' && <Dashboard />}
       {activeSection === 'reservations' && <Reservations />}
-      {activeSection === 'contacts'     && <Contacts />}
-      {activeSection === 'menu'         && <MenuManager />}
-      {activeSection === 'staff'        && <StaffManager />}
+      {activeSection === 'contacts' && <Contacts />}
+      {activeSection === 'menu' && <MenuManager />}
+      {activeSection === 'staff' && <StaffManager />}
     </>
   );
 }
@@ -171,30 +171,30 @@ function Dashboard() {
     Promise.all([getReservations(), getContacts(), getMenuItems()])
       .then(([r, c, m]) => {
         const reservations = r.data?.data || [];
-        const contacts     = c.data?.data || [];
-        const menu         = m.data?.data || staticMenu;
+        const contacts = c.data?.data || [];
+        const menu = m.data?.data || staticMenu;
         setStats({
-          total:    reservations.length,
-          today:    reservations.filter(x => x.date?.startsWith(today)).length,
-          paid:     reservations.filter(x => x.paymentStatus === 'paid').length,
+          total: reservations.length,
+          today: reservations.filter(x => x.date?.startsWith(today)).length,
+          paid: reservations.filter(x => x.paymentStatus === 'paid').length,
           contacts: contacts.length,
-          menu:     menu.length,
-          staff:    DEFAULT_STAFF.length,
+          menu: menu.length,
+          staff: DEFAULT_STAFF.length,
         });
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   };
 
   useEffect(() => { loadStats(); }, []);
 
   const cards = [
-    { icon: FiCalendar,       label: 'Total Reservations', value: stats.total,    color: '#F59E0B' },
-    { icon: FiCalendar,       label: "Today's Bookings",   value: stats.today,    color: '#22c55e' },
-    { icon: FiCheckCircle,    label: 'Paid Reservations',  value: stats.paid,     color: '#3b82f6' },
-    { icon: FiMail,           label: 'New Inquiries',       value: stats.contacts, color: '#ec4899' },
-    { icon: MdRestaurantMenu, label: 'Menu Items',          value: stats.menu,     color: '#a855f7' },
-    { icon: FiUsers,          label: 'Staff Members',       value: stats.staff,    color: '#f97316' },
+    { icon: FiCalendar, label: 'Total Reservations', value: stats.total, color: '#F59E0B' },
+    { icon: FiCalendar, label: "Today's Bookings", value: stats.today, color: '#22c55e' },
+    { icon: FiCheckCircle, label: 'Paid Reservations', value: stats.paid, color: '#3b82f6' },
+    { icon: FiMail, label: 'New Inquiries', value: stats.contacts, color: '#ec4899' },
+    { icon: MdRestaurantMenu, label: 'Menu Items', value: stats.menu, color: '#a855f7' },
+    { icon: FiUsers, label: 'Staff Members', value: stats.staff, color: '#f97316' },
   ];
 
   return (
@@ -233,9 +233,9 @@ function Dashboard() {
 
 /* ── Reservations ────────────────────────────────────────────── */
 function Reservations() {
-  const [items,   setItems]   = useState([]);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter,  setFilter]  = useState('all'); // all | paid | unpaid
+  const [filter, setFilter] = useState('all'); // all | paid | unpaid
 
   const load = () => {
     setLoading(true);
@@ -249,14 +249,14 @@ function Reservations() {
 
   const remove = async id => {
     if (!confirm('Delete this reservation?')) return;
-    await deleteReservation(id).catch(() => {});
+    await deleteReservation(id).catch(() => { });
     setItems(p => p.filter(x => (x._id || x.id) !== id));
   };
 
   const filtered = filter === 'all' ? items
     : items.filter(r => r.paymentStatus === filter);
 
-  const paid   = items.filter(r => r.paymentStatus === 'paid').length;
+  const paid = items.filter(r => r.paymentStatus === 'paid').length;
   const unpaid = items.filter(r => r.paymentStatus !== 'paid').length;
 
   return (
@@ -324,12 +324,12 @@ function Reservations() {
                   <td style={td}>{r.time}</td>
                   <td style={td}>
                     {r.paymentStatus === 'paid'
-                      ? <span style={{ display:'inline-flex', alignItems:'center', gap:'0.3rem', background:'rgba(34,197,94,0.12)', border:'1px solid rgba(34,197,94,0.3)', color:'#22c55e', padding:'0.2rem 0.6rem', borderRadius:9999, fontSize:'0.72rem', fontWeight:600, whiteSpace:'nowrap' }}>
-                          <FiCheckCircle size={11} /> Paid
-                        </span>
-                      : <span style={{ display:'inline-flex', alignItems:'center', gap:'0.3rem', background:'rgba(245,158,11,0.1)', border:'1px solid rgba(245,158,11,0.25)', color:'#F59E0B', padding:'0.2rem 0.6rem', borderRadius:9999, fontSize:'0.72rem', fontWeight:600, whiteSpace:'nowrap' }}>
-                          <FiAlertCircle size={11} /> Unpaid
-                        </span>
+                      ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', color: '#22c55e', padding: '0.2rem 0.6rem', borderRadius: 9999, fontSize: '0.72rem', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                        <FiCheckCircle size={11} /> Paid
+                      </span>
+                      : <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)', color: '#F59E0B', padding: '0.2rem 0.6rem', borderRadius: 9999, fontSize: '0.72rem', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                        <FiAlertCircle size={11} /> Unpaid
+                      </span>
                     }
                   </td>
                   <td style={td}>{r.amountPaid > 0 ? <span style={{ color: '#22c55e', fontWeight: 600 }}>₹{r.amountPaid}</span> : <span style={{ color: 'rgba(255,255,255,0.3)' }}>—</span>}</td>
@@ -350,8 +350,8 @@ function Reservations() {
 
 /* ── Contacts ─────────────────────────────────────────────────── */
 function Contacts() {
-  const [items,    setItems]    = useState([]);
-  const [loading,  setLoading]  = useState(true);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
@@ -360,7 +360,7 @@ function Contacts() {
 
   const remove = async id => {
     if (!confirm('Delete this inquiry?')) return;
-    await deleteContact(id).catch(() => {});
+    await deleteContact(id).catch(() => { });
     setItems(p => p.filter(x => (x._id || x.id) !== id));
     if (selected?._id === id) setSelected(null);
   };
@@ -369,62 +369,62 @@ function Contacts() {
     <div>
       <h2 style={{ fontFamily: 'Cinzel, serif', color: '#fff', fontSize: '1.4rem', marginBottom: '1.5rem' }}>Contact Inquiries ({items.length})</h2>
       {loading ? <p style={{ color: 'rgba(255,255,255,0.4)' }}>Loading...</p>
-       : items.length === 0 ? <EmptyState msg="No inquiries yet" />
-       : (
-        <div style={{ display: 'grid', gridTemplateColumns: selected ? '1fr 1fr' : '1fr', gap: '1.25rem' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {items.map((c, i) => (
-              <div key={c._id || i} className="glass-card" onClick={() => setSelected(c)}
-                style={{ padding: '1.25rem', borderRadius: '0.75rem', cursor: 'pointer', border: selected?._id === c._id ? '1px solid #F59E0B' : '1px solid rgba(245,158,11,0.15)', transition: 'all 0.2s' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <div style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{c.name}</div>
-                    <div style={{ color: '#60a5fa', fontSize: '0.8rem' }}>{c.email}</div>
-                    <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem', marginTop: '0.25rem' }}>{c.subject}</div>
-                  </div>
-                  <button onClick={e => { e.stopPropagation(); remove(c._id || c.id); }}
-                    style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '0.25rem' }}>
-                    <FiTrash2 size={15} />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-          {selected && (
-            <div className="glass-card" style={{ padding: '1.75rem', borderRadius: '0.75rem', alignSelf: 'start', position: 'sticky', top: 80 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-                <h3 style={{ color: '#F59E0B', fontFamily: 'Cinzel, serif', fontSize: '1rem' }}>Message Detail</h3>
-                <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer' }}><FiX size={18} /></button>
-              </div>
+        : items.length === 0 ? <EmptyState msg="No inquiries yet" />
+          : (
+            <div style={{ display: 'grid', gridTemplateColumns: selected ? '1fr 1fr' : '1fr', gap: '1.25rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {[['From', selected.name], ['Email', selected.email], ['Phone', selected.phone], ['Subject', selected.subject]].map(([k, v]) => v && (
-                  <div key={k}><span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>{k}</span><div style={{ color: '#fff', fontSize: '0.9rem' }}>{v}</div></div>
+                {items.map((c, i) => (
+                  <div key={c._id || i} className="glass-card" onClick={() => setSelected(c)}
+                    style={{ padding: '1.25rem', borderRadius: '0.75rem', cursor: 'pointer', border: selected?._id === c._id ? '1px solid #F59E0B' : '1px solid rgba(245,158,11,0.15)', transition: 'all 0.2s' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <div style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{c.name}</div>
+                        <div style={{ color: '#60a5fa', fontSize: '0.8rem' }}>{c.email}</div>
+                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem', marginTop: '0.25rem' }}>{c.subject}</div>
+                      </div>
+                      <button onClick={e => { e.stopPropagation(); remove(c._id || c.id); }}
+                        style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '0.25rem' }}>
+                        <FiTrash2 size={15} />
+                      </button>
+                    </div>
+                  </div>
                 ))}
-                <div><span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>Message</span><div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem', lineHeight: 1.7, marginTop: '0.25rem' }}>{selected.message}</div></div>
               </div>
+              {selected && (
+                <div className="glass-card" style={{ padding: '1.75rem', borderRadius: '0.75rem', alignSelf: 'start', position: 'sticky', top: 80 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+                    <h3 style={{ color: '#F59E0B', fontFamily: 'Cinzel, serif', fontSize: '1rem' }}>Message Detail</h3>
+                    <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer' }}><FiX size={18} /></button>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {[['From', selected.name], ['Email', selected.email], ['Phone', selected.phone], ['Subject', selected.subject]].map(([k, v]) => v && (
+                      <div key={k}><span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>{k}</span><div style={{ color: '#fff', fontSize: '0.9rem' }}>{v}</div></div>
+                    ))}
+                    <div><span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>Message</span><div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem', lineHeight: 1.7, marginTop: '0.25rem' }}>{selected.message}</div></div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      )}
     </div>
   );
 }
 
 /* ── Staff Manager ────────────────────────────────────────────── */
 function StaffManager() {
-  const [staff,     setStaff]     = useState(DEFAULT_STAFF);
-  const [showForm,  setShowForm]  = useState(false);
-  const [editItem,  setEditItem]  = useState(null);
-  const [form,      setForm]      = useState(blankStaff);
+  const [staff, setStaff] = useState(DEFAULT_STAFF);
+  const [showForm, setShowForm] = useState(false);
+  const [editItem, setEditItem] = useState(null);
+  const [form, setForm] = useState(blankStaff);
   const [filterDept, setFilterDept] = useState('All');
-  const [selected,  setSelected]  = useState(null);
-  const [toast,     setToast]     = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [toast, setToast] = useState(null);
 
   const depts = ['All', ...DEPTS];
 
   const showToast = (msg, ok = true) => { setToast({ msg, ok }); setTimeout(() => setToast(null), 3000); };
 
-  const openAdd  = () => { setEditItem(null); setForm(blankStaff); setShowForm(true); setSelected(null); };
+  const openAdd = () => { setEditItem(null); setForm(blankStaff); setShowForm(true); setSelected(null); };
   const openEdit = (s) => { setEditItem(s); setForm({ ...s }); setShowForm(true); setSelected(null); };
 
   const handleSave = e => {
@@ -450,7 +450,7 @@ function StaffManager() {
   const filtered = filterDept === 'All' ? staff : staff.filter(s => s.department === filterDept);
 
   // Stats
-  const active  = staff.filter(s => s.status === 'Active').length;
+  const active = staff.filter(s => s.status === 'Active').length;
   const onLeave = staff.filter(s => s.status === 'On Leave').length;
 
   return (
@@ -459,10 +459,12 @@ function StaffManager() {
       <AnimatePresence>
         {toast && (
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-            style={{ position: 'fixed', top: 90, right: 24, zIndex: 999, display: 'flex', alignItems: 'center', gap: '0.5rem',
+            style={{
+              position: 'fixed', top: 90, right: 24, zIndex: 999, display: 'flex', alignItems: 'center', gap: '0.5rem',
               background: toast.ok ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)',
               border: `1px solid ${toast.ok ? '#22c55e' : '#ef4444'}`,
-              color: toast.ok ? '#22c55e' : '#ef4444', padding: '0.75rem 1.25rem', borderRadius: '0.5rem', backdropFilter: 'blur(8px)' }}>
+              color: toast.ok ? '#22c55e' : '#ef4444', padding: '0.75rem 1.25rem', borderRadius: '0.5rem', backdropFilter: 'blur(8px)'
+            }}>
             {toast.ok ? <FiCheckCircle /> : <FiAlertCircle />} {toast.msg}
           </motion.div>
         )}
@@ -642,12 +644,12 @@ function StaffManager() {
               {/* Detail rows */}
               <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                 {[
-                  { icon: FiPhone,     label: 'Phone',       val: selected.phone },
-                  { icon: FiMail,      label: 'Email',       val: selected.email },
-                  { icon: FiClock,     label: 'Shift',       val: selected.shift },
-                  { icon: FiStar,      label: 'Experience',  val: selected.experience },
-                  { icon: FiBriefcase, label: 'Specialty',   val: selected.specialty },
-                  { icon: FiCalendar,  label: 'Joined',      val: selected.joinDate },
+                  { icon: FiPhone, label: 'Phone', val: selected.phone },
+                  { icon: FiMail, label: 'Email', val: selected.email },
+                  { icon: FiClock, label: 'Shift', val: selected.shift },
+                  { icon: FiStar, label: 'Experience', val: selected.experience },
+                  { icon: FiBriefcase, label: 'Specialty', val: selected.specialty },
+                  { icon: FiCalendar, label: 'Joined', val: selected.joinDate },
                 ].map(({ icon: Icon, label, val }) => val && (
                   <div key={label} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
                     <div style={{ width: 30, height: 30, borderRadius: '0.4rem', background: 'rgba(245,158,11,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -695,7 +697,7 @@ function MenuManager() {
       .finally(() => setLoading(false));
   }, []);
 
-  const openAdd  = () => { setEditItem(null); setForm(blankForm); setShowForm(true); };
+  const openAdd = () => { setEditItem(null); setForm(blankForm); setShowForm(true); };
   const openEdit = (item) => { setEditItem(item); setForm({ ...item, price: String(item.price) }); setShowForm(true); };
 
   const showToast = (msg, ok = true) => { setToast({ msg, ok }); setTimeout(() => setToast(null), 3000); };
@@ -725,7 +727,7 @@ function MenuManager() {
 
   const remove = async id => {
     if (!confirm('Delete this menu item?')) return;
-    await deleteMenuItem(id).catch(() => {});
+    await deleteMenuItem(id).catch(() => { });
     setItems(p => p.filter(x => (x._id || x.id) !== id));
     showToast('Item deleted.');
   };
@@ -734,10 +736,12 @@ function MenuManager() {
     <div>
       {toast && (
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-          style={{ position: 'fixed', top: 90, right: 24, zIndex: 999, display: 'flex', alignItems: 'center', gap: '0.5rem',
+          style={{
+            position: 'fixed', top: 90, right: 24, zIndex: 999, display: 'flex', alignItems: 'center', gap: '0.5rem',
             background: toast.ok ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)',
             border: `1px solid ${toast.ok ? '#22c55e' : '#ef4444'}`,
-            color: toast.ok ? '#22c55e' : '#ef4444', padding: '0.75rem 1.25rem', borderRadius: '0.5rem' }}>
+            color: toast.ok ? '#22c55e' : '#ef4444', padding: '0.75rem 1.25rem', borderRadius: '0.5rem'
+          }}>
           {toast.ok ? <FiCheckCircle /> : <FiAlertCircle />} {toast.msg}
         </motion.div>
       )}
@@ -823,5 +827,5 @@ function EmptyState({ msg }) {
   return <div style={{ textAlign: 'center', padding: '4rem', color: 'rgba(255,255,255,0.35)', fontSize: '1rem' }}>{msg}</div>;
 }
 
-const td  = { padding: '0.8rem 0.85rem', color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem' };
+const td = { padding: '0.8rem 0.85rem', color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem' };
 const lbl = { display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', marginBottom: '0.5rem', fontWeight: 500 };
