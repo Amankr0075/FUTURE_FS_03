@@ -1,9 +1,9 @@
-const express    = require('express');
-const cors       = require('cors');
-const helmet     = require('helmet');
-const morgan     = require('morgan');
-const dotenv     = require('dotenv');
-const connectDB  = require('./config/db');
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
 // Load env vars
@@ -20,7 +20,7 @@ app.use(helmet({
 }));
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://your-frontend-domain.com']
+    ? ['https://amankr0075.github.io']
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true,
 }));
@@ -32,11 +32,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // ── Routes ───────────────────────────────────────────────────
-app.use('/api/health',       require('./routes/health'));
+app.use('/api/health', require('./routes/health'));
 app.use('/api/reservations', require('./routes/reservations'));
-app.use('/api/contact',      require('./routes/contact'));
-app.use('/api/menu',         require('./routes/menu'));
-app.use('/api/payment',      require('./routes/payment'));
+app.use('/api/contact', require('./routes/contact'));
+app.use('/api/menu', require('./routes/menu'));
+app.use('/api/payment', require('./routes/payment'));
 
 // ── 404 catch-all ────────────────────────────────────────────
 app.use((req, res) => {
