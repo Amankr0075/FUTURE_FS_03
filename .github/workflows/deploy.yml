@@ -1,0 +1,110 @@
+name: 🚀 Deploy Royal Spice Restaurant
+
+# ─────────────────────────────────────────────
+# Triggers: push to main branch only
+# ─────────────────────────────────────────────
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:   # allow manual trigger from GitHub UI
+
+# Cancel any in-progress run for the same branch
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ═══════════════════════════════════════════
+  # JOB 1 — Build & Deploy Frontend → GitHub Pages
+  # ═══════════════════════════════════════════
+  deploy-frontend:
+    name: 🌐 Frontend → GitHub Pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: 📦 Install client dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: 🏗️ Build React app
+        run: npm run build
+        working-directory: client
+        env:
+          # Vite reads this automatically — sets base URL for GitHub Pages
+          VITE_API_URL: https://royalspice.duckdns.org/api
+          NODE_ENV: production
+
+      - name: 🚢 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: client/dist
+          publish_branch: gh-pages
+          # Ensures React Router (HashRouter) works on GitHub Pages
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: '🚀 Deploy frontend build from ${{ github.sha }}'
+
+  # ═══════════════════════════════════════════
+  # JOB 2 — SSH into EC2 → Pull & Restart Backend
+  # ═══════════════════════════════════════════
+  deploy-backend:
+    name: ⚙️ Backend → AWS EC2
+    runs-on: ubuntu-latest
+    # Only run after frontend deploys successfully
+    needs: deploy-frontend
+
+    steps:
+      - name: 🔐 SSH into EC2 & Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          timeout: 120s
+          script: |
+            echo "──────────────────────────────────────────"
+            echo "🚀 Royal Spice — Auto Deploy Started"
+            echo "──────────────────────────────────────────"
+
+            # Navigate to project directory
+            cd ~/FUTURE_FS_03 || { echo "❌ Project folder not found"; exit 1; }
+
+            # Pull latest code from main
+            echo "📥 Pulling latest code..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Install/update server dependencies
+            echo "📦 Installing server dependencies..."
+            cd server
+            npm ci --omit=dev
+
+            # Write .env from GitHub Secret (safe — never in repo)
+            echo "🔑 Writing .env from secrets..."
+            echo "${{ secrets.SERVER_ENV }}" > .env
+
+            # Restart PM2 — graceful reload keeps zero downtime
+            echo "♻️  Restarting PM2 process..."
+            pm2 reload royalspice-api --update-env || pm2 start ecosystem.config.js
+
+            # Save PM2 state so it survives reboots
+            pm2 save
+
+            echo "──────────────────────────────────────────"
+            echo "✅ Deployment complete!"
+            pm2 status royalspice-api
+            echo "──────────────────────────────────────────"
