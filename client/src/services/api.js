@@ -1,8 +1,13 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL:
+    import.meta.env.MODE === 'production'
+      ? 'https://royalspice.duckdns.org/api'
+      : '/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // ── Reservations ─────────────────────────────────────────────
@@ -25,7 +30,7 @@ export const deleteMenuItem = (id) => api.delete(`/menu/${id}`);
 
 // ── Payment (Razorpay) ────────────────────────────────────────
 export const createPaymentOrder = (data) => api.post('/payment/create-order', data);
-export const verifyPayment      = (data) => api.post('/payment/verify', data);
+export const verifyPayment = (data) => api.post('/payment/verify', data);
 
 // ── Health ────────────────────────────────────────────────────
 export const checkHealth = () => api.get('/health');
